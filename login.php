@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오목 게임 - 로그인</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page"> 
+
+    <div class="login-container">
+        <h2>로그인</h2>
+        <form id="login-form">
+            
+            <div class="input-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+        
+        <div class="links">
+            <a href="signup.php" id="signup-link">회원가입</a>
+            <span class="separator">|</span>
+            <a href="index.php" id="home-link">홈으로 돌아가기</a>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>
