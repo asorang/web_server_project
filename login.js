@@ -16,25 +16,43 @@ loginForm.addEventListener('submit', (event) => {
         return;
     }
 
-    // 가짜 DB (localStorage)에서 닉네임 조회
-    const storedNickname = localStorage.getItem(username);
+    // ★★★ (제거됨) 가짜 로그인(localStorage, sessionStorage) 로직 ★★★
+    // const storedNickname = localStorage.getItem(username);
+    // if (storedNickname) { ... } else { ... }
+
+    // ★★★ (신규) 실제 백엔드 연동 자리 ★★★
+    // (백엔드 연동) TODO: 'login_api.php'를 완성하면 이 주석을 해제합니다.
     
-    if (storedNickname) {
-        // (시뮬레이션) 로그인 성공!
-        
-        // ★★★ (수정) 닉네임, 급수, 점수를 세션에 저장 ★★★
-        sessionStorage.setItem('userNickname', storedNickname);
-        sessionStorage.setItem('userRank', '10급'); // (가짜) 급수
-        sessionStorage.setItem('userRating', '1500'); // (가짜) 점수
-        // (userImage는 프로필 기능 복원 시 추가)
+    console.log('백엔드 API 호출 준비:', username, password);
 
-        alert(storedNickname + '님, 환영합니다!');
-        
-        window.location.href = 'index.php'; 
+    /*
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
 
-    } else {
-        // (시뮬레이션) 로그인 실패
-        alert('시뮬레이션: 아이디가 존재하지 않습니다. 회원가입을 먼저 해주세요.');
-        usernameInput.focus();
-    }
+    fetch('api/login_api.php', { // (예시 API 경로)
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // (백엔드) 로그인 성공 시, 백엔드가 보내준 닉네임/급수/점수/이미지 저장
+            // (참고: 실제로는 세션 쿠키를 사용하므로 JS에서 저장할 필요 없을 수 있음)
+            sessionStorage.setItem('userNickname', data.nickname); 
+            sessionStorage.setItem('userRank', data.rank); 
+            sessionStorage.setItem('userRating', data.rating); 
+
+            alert(data.nickname + '님, 환영합니다!');
+            window.location.href = 'index.php';
+        } else {
+            // (백엔드) 로그인 실패
+            alert('로그인 실패: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('서버 통신 오류:', error);
+        alert('서버와 통신할 수 없습니다.');
+    });
+    */
 });

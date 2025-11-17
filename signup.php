@@ -6,7 +6,9 @@
     <title>오목 게임 - 회원가입</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-page"> <div class="signup-container"> 
+<body class="login-page"> 
+
+    <div class="signup-container"> 
         <h2>회원가입</h2>
         
         <form id="signup-form">

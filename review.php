@@ -20,7 +20,8 @@
             </div>
             
             <div class="links">
-                <a href="history.php">기록 목록으로 돌아가기</a> </div>
+                <a href="history.php">기록 목록으로 돌아가기</a>
+            </div>
         </div>
         
         <div class="moves-panel">

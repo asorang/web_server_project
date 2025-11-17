@@ -9,7 +9,6 @@
 <body> 
 
     <div class="game-container">
-        
         <main class="game-content">
             
             <div class="board-column">

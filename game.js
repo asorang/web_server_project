@@ -1,19 +1,13 @@
 // 1. 페이지 로드 시 로그인 정보 설정
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (이전과 동일: 닉네임, 급수, 점수 설정) ...
-    const loggedInUser = sessionStorage.getItem('userNickname');
-    const userRank = sessionStorage.getItem('userRank');
-    const userRating = sessionStorage.getItem('userRating');
-    const playerNameEl = document.getElementById('player-name-game');
-    const playerRankEl = document.getElementById('player-rank-game');
-    if (loggedInUser && userRank && userRating) {
-        playerNameEl.innerText = loggedInUser + ' (흑돌)';
-        playerRankEl.innerText = `${userRank} ${userRating}점`;
-    } else {
-        playerNameEl.innerText = '나 (흑돌)';
-        playerRankEl.innerText = '(비로그인)';
-    }
+    // ★★★ (제거됨) 닉네임/급수 로직 ★★★
+    // (백엔드 연동) TODO: 'game.php' 페이지가 로드될 때 
+    // fetch로 '내 정보'와 'AI 정보'를 받아와서 채워야 합니다.
+    
+    document.getElementById('player-name-game').innerText = '나 (흑돌)';
+    document.getElementById('player-rank-game').innerText = '(?급 | ????점)';
 });
+
 
 // 2. 캔버스 및 그리기 도구
 const canvas = document.getElementById('omok-board');
@@ -26,27 +20,18 @@ const PADDING = 20;
 canvas.width = PADDING * 2 + LINE_COUNT * GRID_SIZE;
 canvas.height = PADDING * 2 + LINE_COUNT * GRID_SIZE;
 
-// 3. 타이머 및 게임 상태 변수
-const TOTAL_TIME = 600; 
-let playerTime = TOTAL_TIME;
-let aiTime = TOTAL_TIME;
-let currentPlayer = 'player'; 
-let timerInterval = null; 
-let isGameActive = true;
+// ★★★ (제거됨) 3. 타이머 및 게임 상태 변수 ★★★
+// ★★★ (제거됨) 4. 오목판 상태 (boardState) ★★★
 
-// ★★★ (신규) 4. 오목판 상태 (0: 빈칸, 1: 흑돌, 2: 백돌) ★★★
-let boardState = [];
-
-// 5. DOM 요소 (타이머, 모달)
-const playerTimerDisplay = document.getElementById('player-timer');
-const aiTimerDisplay = document.getElementById('ai-timer');
+// 5. DOM 요소 (모달은 남겨둠)
 const modalOverlay = document.getElementById('end-game-modal');
 const modalMessage = document.getElementById('modal-message');
 const rematchButton = document.getElementById('rematch-button');
 const modalHomeButton = document.getElementById('modal-home-button');
 
+
 // 6. 오목판 그리기 함수 (drawBoard)
-// ... (이전과 동일) ...
+// (오목판을 그리는 기능은 유지)
 function drawBoard() {
     ctx.fillStyle = '#f3d7a1'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -76,103 +61,19 @@ function drawBoard() {
         ctx.fillText(String(i + 1), canvas.width - (PADDING / 2), y); 
     }
 }
-// (신규) 돌 그리기 (복기 로직에서 가져옴)
-function drawStone(gridY, gridX, player) {
-    const stoneX = PADDING + gridX * GRID_SIZE;
-    const stoneY = PADDING + gridY * GRID_SIZE;
-    const isBlack = (player === 1); 
-    ctx.fillStyle = isBlack ? '#000000' : '#FFFFFF';
-    ctx.beginPath();
-    ctx.arc(stoneX, stoneY, GRID_SIZE / 2 - 2, 0, 2 * Math.PI);
-    ctx.fill();
-    if (!isBlack) {
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-}
+// (돌 그리기 함수는 남겨둠 - 백엔드 응답 시 필요)
+function drawStone(gridY, gridX, player) { /* ... (game.js와 동일) ... */ }
 
-// 7. 타이머 관련 함수
-// ... (formatTime, updateTimerDisplay, startTimer - 이전과 동일) ...
-function formatTime(seconds) { /* ... (동일) ... */ }
-function updateTimerDisplay() { /* ... (동일) ... */ }
-function startTimer() { /* ... (동일) ... */ }
-
-// 8. 게임 종료 및 모달 함수
-function showEndGameModal(message) {
-    isGameActive = false; 
-    clearInterval(timerInterval); 
-    modalMessage.innerText = message; 
-    modalOverlay.style.display = 'flex'; 
-}
-function endGame(winner) {
-    const winnerName = (winner === 'player') ? '플레이어' : 'AI';
-    showEndGameModal(`시간 초과! ${winnerName}님의 승리입니다!`);
-}
-
-// 9. 게임 초기화 함수
-function resetGame() {
-    playerTime = TOTAL_TIME;
-    aiTime = TOTAL_TIME;
-    currentPlayer = 'player'; 
-    isGameActive = true;
-    
-    // ★★★ (신규) 오목판 상태 초기화 (15x15 배열을 0으로 채움) ★★★
-    boardState = Array(BOARD_SIZE).fill(0).map(() => Array(BOARD_SIZE).fill(0));
-    
-    modalOverlay.style.display = 'none'; 
-    drawBoard(); 
-    updateTimerDisplay(); 
-    startTimer(); 
-}
-
-// ★★★ (신규) 10. 승리 판정 함수 ★★★
-function checkWin(player, lastX, lastY) {
-    const directions = [
-        { dx: 1, dy: 0 },  // 가로
-        { dx: 0, dy: 1 },  // 세로
-        { dx: 1, dy: 1 },  // 대각선 \
-        { dx: 1, dy: -1 } // 대각선 /
-    ];
-
-    for (let dir of directions) {
-        let count = 1; // 방금 놓은 돌 포함
-
-        // (1) 정방향 (예: 오른쪽)
-        for (let i = 1; i < 5; i++) {
-            const x = lastX + i * dir.dx;
-            const y = lastY + i * dir.dy;
-            // 보드 안이고, 같은 플레이어 돌인지 확인
-            if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && boardState[y][x] === player) {
-                count++;
-            } else {
-                break; // 연속이 끊김
-            }
-        }
-
-        // (2) 역방향 (예: 왼쪽)
-        for (let i = 1; i < 5; i++) {
-            const x = lastX - i * dir.dx;
-            const y = lastY - i * dir.dy;
-            if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && boardState[y][x] === player) {
-                count++;
-            } else {
-                break; // 연속이 끊김
-            }
-        }
-
-        if (count >= 5) {
-            return true; // 5목 완성
-        }
-    }
-    return false; // 5목 없음
-}
+// ★★★ (제거됨) 7. 타이머 관련 함수 ★★★
+// ★★★ (제거됨) 8. 게임 종료 및 모달 함수 ★★★
+// ★★★ (제거됨) 9. 게임 초기화 함수 ★★★
+// ★★★ (제거됨) 10. 승리 판정 함수 ★★★
 
 
 // 11. 이벤트 리스너
-// ★★★ (수정) 캔버스 클릭 ★★★
+// ★★★ (수정) 캔버스 클릭 (좌표만 콘솔에 찍음) ★★★
 canvas.addEventListener('click', (event) => {
-    if (!isGameActive || currentPlayer === 'ai') { return; }
+    // if (!isGameActive || currentPlayer === 'ai') { return; } (제거)
 
     const rect = canvas.getBoundingClientRect(); 
     const x = event.clientX - rect.left;
@@ -182,79 +83,47 @@ canvas.addEventListener('click', (event) => {
 
     if (gridX < 0 || gridX >= BOARD_SIZE || gridY < 0 || gridY >= BOARD_SIZE) { return; }
 
-    // ★ (신규) 이미 돌이 있는지 확인
-    if (boardState[gridY][gridX] !== 0) {
-        alert('이미 돌이 놓인 자리입니다.');
-        return;
-    }
+    // ★ (제거됨) 이미 돌이 있는지 확인 (boardState가 없음)
+    // ★ (제거됨) 돌 그리기 (drawStone)
+    // ★ (제거됨) 승리 판정 (checkWin)
+    // ★ (제거됨) 턴 넘기기, AI 시뮬레이션
+
+    console.log(`플레이어 클릭: [${gridY}, ${gridX}]`);
     
-    // (1) 플레이어(흑돌) 수 처리
-    boardState[gridY][gridX] = 1; // 1 = 흑돌
-    drawStone(gridY, gridX, 1);
-    console.log(`플레이어 (흑)가 [${gridY}, ${gridX}]에 둠`);
-
-    // (2) ★ 플레이어 승리 판정 ★
-    if (checkWin(1, gridX, gridY)) {
-        showEndGameModal('축하합니다! 승리하셨습니다!');
-        return; // 게임 종료
-    }
-    
-    // (3) AI 턴으로 넘기기
-    currentPlayer = 'ai';
-    startTimer(); 
-
-    // (4) (시뮬레이션) 1초 뒤 AI가 응수
-    setTimeout(() => {
-        if (!isGameActive) return;
-
-        // (수정) 가짜 AI 로직 (빈 자리를 찾을 때까지 옆으로 이동)
-        let aiGridX = gridX + 1;
-        let aiGridY = gridY;
-        while (aiGridX < BOARD_SIZE && boardState[aiGridY][aiGridX] !== 0) {
-            aiGridX++; // 이미 돌이 있으면 옆으로 한 칸 더
+    // (백엔드 연동) TODO: 'play_ai_api.php'를 완성하면 이 주석을 해제합니다.
+    /*
+    fetch('api/play_ai_api.php', {
+        method: 'POST',
+        body: JSON.stringify({ move: [gridY, gridX] })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 1. 내가 둔 돌 그리기
+            drawStone(gridY, gridX, 1); 
+            // 2. AI가 둔 돌 그리기
+            drawStone(data.aiMove[0], data.aiMove[1], 2);
+            // 3. (승리 확인)
+            if (data.gameStatus === 'win_player') {
+                // (모달 팝업 함수가 없으므로 임시 alert)
+                alert('축하합니다! 승리하셨습니다!');
+                // showEndGameModal('축하합니다! 승리하셨습니다!');
+            } else if (data.gameStatus === 'win_ai') {
+                alert('AI의 승리입니다!');
+                // showEndGameModal('AI의 승리입니다!');
+            }
         }
-        if (aiGridX >= BOARD_SIZE) { // 보드 끝에 닿으면
-             aiGridX = gridX - 1; // 반대쪽 시도
-             while (aiGridX >= 0 && boardState[aiGridY][aiGridX] !== 0) {
-                 aiGridX--;
-             }
-        }
-        // (간단한 예외 처리 - 둘 곳이 없으면 랜덤)
-        if (aiGridX < 0 || aiGridX >= BOARD_SIZE || boardState[aiGridY][aiGridX] !== 0) {
-             aiGridX = Math.floor(Math.random() * 15);
-             aiGridY = Math.floor(Math.random() * 15);
-             // (이것도 실패하면 그냥 턴을 넘김 - 실제로는 빈자리를 찾아야 함)
-             if (boardState[aiGridY][aiGridX] !== 0) {
-                 currentPlayer = 'player';
-                 startTimer();
-                 return;
-             }
-        }
-        
-        // (5) AI(백돌) 수 처리
-        boardState[aiGridY][aiGridX] = 2; // 2 = 백돌
-        drawStone(aiGridY, aiGridX, 2);
-        console.log(`AI (백)가 [${aiGridY}, ${aiGridX}]에 둠`);
-        
-        // (6) ★ AI 승리 판정 ★
-        if (checkWin(2, aiGridX, aiGridY)) {
-            showEndGameModal('AI의 승리입니다!');
-            return; // 게임 종료
-        }
-
-        // (7) 다시 플레이어 턴으로
-        currentPlayer = 'player';
-        startTimer(); 
-
-    }, 1000); // 1초 딜레이
+    });
+    */
 });
 
 // "기권하기" 버튼
 document.getElementById('resign-button').addEventListener('click', () => {
-    if (!isGameActive) return; 
     const isConfirmed = confirm('정말로 기권하시겠습니까?');
     if (isConfirmed) {
-        showEndGameModal('기권패했습니다. AI의 승리입니다!');
+        alert('기권패했습니다. AI의 승리입니다!');
+        // (백엔드 연동) TODO: 'resign_api.php'를 fetch로 호출해야 함
+        // showEndGameModal('기권패했습니다. AI의 승리입니다!');
     }
 });
 
@@ -264,9 +133,9 @@ modalHomeButton.addEventListener('click', () => { window.location.href = 'index.
 
 // "새로 시작하기" (모달) 버튼
 rematchButton.addEventListener('click', () => {
-    resetGame(); 
+    window.location.reload(); 
 });
 
 
 // 12. 페이지 로드 시 게임 시작
-resetGame();
+drawBoard(); // 오목판만 그리기

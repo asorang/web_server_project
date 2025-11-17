@@ -24,7 +24,7 @@ signupForm.addEventListener('submit', (event) => {
     const genderInput = document.querySelector('input[name="gender"]:checked');
     const gender = genderInput ? genderInput.value : null;
 
-    // 4. 프론트엔드 유효성 검사
+    // 4. (유지) 프론트엔드 유효성 검사
     if (!username || !password || !passwordConfirm || !nickname || !name || !phone || !dob || !gender) {
         alert('모든 필드를 입력해주세요.');
         return;
@@ -35,25 +35,43 @@ signupForm.addEventListener('submit', (event) => {
         return;
     }
 
-    // 5. ★★★ (수정) 가짜 DB (localStorage)에 아이디/닉네임 저장 ★★★
-    // (백엔드가 없어도 로그인 시 닉네임을 찾을 수 있도록 시뮬레이션)
-    
-    // (A) 이미 아이디가 있는지 확인
-    if (localStorage.getItem(username)) {
-        alert('시뮬레이션: 이미 사용 중인 아이디입니다.');
-        usernameInput.focus();
-        return;
-    }
+    // ★★★ (제거됨) 가짜 회원가입(localStorage) 로직 ★★★
+    // if (localStorage.getItem(username)) { ... }
+    // localStorage.setItem(username, nickname);
+    // alert(nickname + '님, 환영합니다!');
+    // window.location.href = 'login.php';
 
-    // (B) 아이디를 Key로, 닉네임을 Value로 저장
-    localStorage.setItem(username, nickname);
-    // (실제로는 { pw: password, name: name ... } 객체를 저장해야 함)
+    // ★★★ (신규) 실제 백엔드 연동 자리 ★★★
+    // (백엔드 연동) TODO: 'signup_api.php'를 완성하면 이 주석을 해제합니다.
     
-    console.log('회원가입 시도 (백엔드로 보낼 데이터):');
-    console.log({ username, password, nickname, name, phone, dob, gender });
-    
-    alert(nickname + '님, 환영합니다! 회원가입이 완료되었습니다.');
+    console.log('백엔드 API 호출 준비: (모든 폼 데이터)');
 
-    // 가입 성공 시 로그인 페이지로 이동
-    window.location.href = 'login.php';
+    /*
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('nickname', nickname);
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('dob', dob);
+    formData.append('gender', gender);
+
+    fetch('api/signup_api.php', { // (예시 API 경로)
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+            window.location.href = 'login.php';
+        } else {
+            alert('회원가입 실패: ' + data.message); // 예: "이미 사용 중인 아이디입니다."
+        }
+    })
+    .catch(error => {
+        console.error('서버 통신 오류:', error);
+        alert('서버와 통신할 수 없습니다.');
+    });
+    */
 });

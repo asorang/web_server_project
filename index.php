@@ -20,9 +20,7 @@
 
             <div class="action-buttons">
                 <button id="main-action-button" class="primary-button">봇과 플레이</button>
-                
                 <button id="pvp-button" class="btn-blue">온라인 대전</button>
-                
                 <button id="view-history-button" class="secondary-button">기록 보기</button>
                 <button id="settings-button" class="secondary-button">설정</button>
             </div>

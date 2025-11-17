@@ -12,8 +12,10 @@
         <h1>게임 기록</h1>
         <p>지금까지의 AI 대전 기록입니다. (이 데이터는 현재 가상 데이터입니다)</p>
 
-        <p id="total-record-text" class="history-summary-text">총 전적: 계산 중...</p>
-        <p id="win-rate-text" class="history-summary-text">승률: 계산 중...</p>
+        <div class="history-summary-container">
+            <p id="total-record-text" class="history-summary-text">총 전적: 계산 중...</p>
+            <p id="win-rate-text" class="history-summary-text">승률: 계산 중...</p>
+        </div>
         
         <table class="history-table">
             <thead>

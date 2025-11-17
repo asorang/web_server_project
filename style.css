@@ -11,8 +11,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #333; 
     color: #f0f0f0; 
-    
-    /* (수정) 모바일용 overflow 제거 */
     overflow: hidden;
     position: relative; 
 }
@@ -25,14 +23,10 @@ body::before {
     left: 10px;
     right: 10px;
     bottom: 10px;
-    
     border: 2px solid #00FFFF; 
     border-radius: 8px; 
-    
     pointer-events: none; 
-    
     z-index: 900; 
-    
     box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.2);
 }
 
@@ -52,7 +46,7 @@ body.home-page { text-align: center; display: flex; justify-content: center; ali
 .btn-blue:hover { background-color: #3a7bc8; }
 .secondary-button { background-color: #777; color: white; }
 .secondary-button:hover { background-color: #666; }
-.auth-links { display: flex; justify-content: center; }
+.auth-links { margin-top: 30px; display: flex; justify-content: center; }
 .text-button { background: none; border: none; color: #ccc; font-size: 14px; cursor: pointer; text-decoration: none; padding: 5px; transition: color 0.2s ease; }
 .text-button:hover { color: #eee; text-decoration: underline; }
 .separator { color: #777; font-size: 14px; }
@@ -128,9 +122,7 @@ body.history-page { padding-top: 50px; }
 
 /* ------------------------------- */
 /* 6. 닉네임 표시 스타일 (index.html) */
-/* (데스크톱 - 왼쪽 상단 고정) */
 /* ------------------------------- */
-
 #user-nickname {
     position: absolute;
     top: 20px;
@@ -219,5 +211,3 @@ body.matchmaking-page { display: flex; justify-content: center; align-items: cen
 /* ------------------------------- */
 /* (삭제) 12. 모바일 반응형 스타일 */
 /* ------------------------------- */
-
-/* (모바일 @media 쿼리 블록 전체가 삭제되었습니다) */
