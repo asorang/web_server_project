@@ -1,0 +1,623 @@
+/* =========================================
+   1. 공통 및 기본 스타일 (Global Reset)
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Segoe UI', Roboto, sans-serif;
+    background-color: #333;
+    color: #f0f0f0;
+    overflow: hidden; /* 스크롤 방지 */
+    position: relative;
+}
+
+/* 전체 화면 네온 테두리 프레임 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #00FFFF;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 900;
+    box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.2);
+}
+
+/* 링크 공통 스타일 */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================================
+   2. 홈 페이지 (index.php)
+   ========================================= */
+body.home-page {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.welcome-message {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 280px;
+}
+
+/* 버튼 스타일 공통 */
+.primary-button, .secondary-button, .btn-blue, .btn-danger, .btn-primary {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: white;
+}
+
+.primary-button, .btn-primary { background-color: #55a83a; }
+.primary-button:hover, .btn-primary:hover { background-color: #4a9131; }
+
+.btn-blue { background-color: #4A90E2; }
+.btn-blue:hover { background-color: #3a7bc8; }
+
+.secondary-button, .btn-secondary { background-color: #777; }
+.secondary-button:hover, .btn-secondary:hover { background-color: #666; }
+
+.btn-danger { background-color: #e63946; }
+.btn-danger:hover { background-color: #c9303d; }
+
+.auth-links {
+    display: flex;
+    justify-content: center;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+.text-button:hover {
+    color: #eee;
+    text-decoration: underline;
+}
+
+/* 홈 화면 좌측 상단 닉네임 패널 */
+#user-nickname {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    z-index: 901;
+}
+
+#nickname-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00FFFF;
+}
+
+#user-nickname .rank-info {
+    font-size: 14px;
+    color: #ccc;
+}
+
+
+/* =========================================
+   3. 게임 페이지 (game.php, game_pvp.php)
+   ========================================= */
+.game-container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.game-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.board-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#omok-board {
+    background-color: #f3d7a1;
+    border: 2px solid #333;
+    border-radius: 5px;
+}
+
+.player-info {
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 600px;
+    background-color: #222;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-info.player-black { border: 2px solid #FFFFFF; }
+.player-info.player-white { border: 2px solid #00FFFF; }
+
+.player-info h2 {
+    font-size: 18px;
+    margin-bottom: 0;
+    color: #fff;
+}
+
+.rank-info {
+    font-size: 14px;
+    color: #ccc;
+    font-weight: normal;
+}
+
+.timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #111;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.game-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 600px;
+}
+
+.game-actions button {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+
+/* =========================================
+   4. 로그인 & 회원가입 (Form Styles)
+   ========================================= */
+body.login-page {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.login-container, .signup-container {
+    background-color: #222;
+    padding: 40px 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-container { width: 90%; max-width: 400px; }
+.signup-container { width: 90%; max-width: 700px; }
+
+.login-container h2, .signup-container h2 {
+    color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+#signup-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 30px;
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-group.full-width { grid-column: 1 / -1; }
+
+.input-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+#signup-form .login-button {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+}
+
+.login-button {
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #55a83a;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+.login-button:hover { background-color: #4a9131; }
+
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.links a {
+    color: #ccc;
+    font-size: 14px;
+}
+.links a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.separator { color: #777; font-size: 14px; }
+
+/* 성별 선택 라디오 버튼 커스텀 */
+.gender-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 5px;
+}
+.gender-options input[type="radio"] { display: none; }
+.gender-options label {
+    color: #ccc;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.gender-options input[type="radio"]:checked + label {
+    background-color: #4A90E2;
+    color: white;
+    border-color: #4A90E2;
+}
+.gender-options label:hover { background-color: #444; }
+
+
+/* =========================================
+   5. 기록 페이지 (history.php)
+   ========================================= */
+body.history-page { padding-top: 50px; }
+
+.history-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.history-container h1 { color: #f0f0f0; margin-bottom: 10px; }
+.history-container p { color: #ccc; margin-bottom: 15px; }
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.history-table th, .history-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+.history-table th {
+    background-color: #111;
+    color: #00FFFF;
+    font-size: 16px;
+}
+
+.history-table tr:last-child td { border-bottom: none; }
+
+.history-table .result-win { color: #55a83a; font-weight: bold; }
+.history-table .result-loss { color: #e63946; font-weight: bold; }
+
+.history-table tr.review-link {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.history-table tr.review-link:hover { background-color: #3a3a3a; }
+
+
+/* =========================================
+   6. 복기 페이지 (review.php)
+   ========================================= */
+body.review-page { padding-top: 20px; }
+
+.review-container {
+    width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.review-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.review-controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4A90E2;
+    color: white;
+}
+.review-controls button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+.moves-panel {
+    width: 300px;
+    height: 600px;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.moves-panel h2 {
+    text-align: center;
+    color: #00FFFF;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+#moves-list { list-style: none; padding: 0; margin: 0; }
+
+#moves-list li {
+    padding: 8px 12px;
+    color: #ccc;
+    border-radius: 5px;
+    cursor: default;
+    font-size: 14px;
+}
+
+#moves-list li.active-move {
+    background-color: #4A90E2;
+    color: white;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   7. 설정 페이지 (settings.php)
+   ========================================= */
+body.settings-page { padding-top: 50px; }
+
+.settings-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #222;
+    border-radius: 10px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.settings-container h1 {
+    text-align: center;
+    color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.settings-group {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 20px;
+}
+.settings-group:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.settings-group h2 {
+    color: #00FFFF;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.setting-item label { font-size: 16px; color: #ddd; }
+.setting-item input[type="range"] { width: 50%; cursor: pointer; }
+
+
+/* =========================================
+   8. 매칭 페이지 (matchmaking.php)
+   ========================================= */
+body.matchmaking-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.matchmaking-container {
+    background-color: #222;
+    padding: 40px 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #555;
+    border-top-color: #00FFFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#cancel-matchmaking {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #777;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#cancel-matchmaking:hover { background-color: #666; }
+
+
+/* =========================================
+   9. 모달 팝업 (Game Over Modal)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content h2 {
+    color: #f0f0f0;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #ccc;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+}
