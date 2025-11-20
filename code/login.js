@@ -1,24 +1,18 @@
 const loginForm = document.getElementById('login-form');
-const usernameInput = document.getElementById('username'); 
-const passwordInput = document.getElementById('password');
+const idInput = document.getElementById('userID'); 
+const pwInput = document.getElementById('userPassword');
 
 loginForm.addEventListener('submit', (event) => {
-    event.preventDefault(); 
-    const username = usernameInput.value; 
-    const password = passwordInput.value; 
+    // 입력값 가져오기 (공백 제거)
+    const idValue = idInput.value.trim();
+    const pwValue = pwInput.value.trim();
 
-    // [Backend] 로그인 API 호출
-    // Method: POST /api/login
-    // Body: { username, password }
-    // Response: { token, nickname, rank, rating }
-    
-    console.log('로그인 요청:', username);
-    
-    // TODO: 백엔드 응답 성공 시 아래 로직 실행
-    /*
-    sessionStorage.setItem('userNickname', response.nickname);
-    sessionStorage.setItem('userRank', response.rank);
-    sessionStorage.setItem('userRating', response.rating);
-    window.location.href = 'index.php';
-    */
+    // 프론트엔드 유효성 검사: 빈칸 확인
+    if (idValue === "" || pwValue === "") {
+        alert('아이디와 비밀번호를 모두 입력하세요.');
+        event.preventDefault(); // 전송 막기
+        return;
+    }
+
+    // 검사 통과 시 form의 action 경로로 POST 전송됨
 });
