@@ -11,7 +11,7 @@
     <div class="login-container">
         <h2>로그인</h2>
         
-        <form id="login-form" action="login_check.php" method="POST">
+        <form id="login-form" action="./actionCodes/loginSQL.php" method="POST">
             
             <div class="input-group">
                 <label for="userID">아이디</label>
@@ -33,6 +33,6 @@
         </div>
     </div>
     
-    <script src="login.js"></script>
+    
 </body>
 </html>

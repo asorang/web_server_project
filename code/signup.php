@@ -10,7 +10,7 @@
     <div class="signup-container"> 
         <h2>회원가입</h2>
         
-        <form id="signup-form" action="signup_check.php" method="POST">
+        <form id="signup-form" action="./actionCodes/signupSQL.php" method="POST">
             
             <div class="input-group full-width">
                 <label for="userID">아이디</label>
@@ -65,7 +65,5 @@
             <a href="login.php">이미 계정이 있으신가요? (로그인)</a>
         </div>
     </div>
-    
-    <script src="signup.js"></script>
 </body>
 </html>
