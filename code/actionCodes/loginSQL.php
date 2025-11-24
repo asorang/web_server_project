@@ -17,7 +17,7 @@
         session_start();
         $_SESSION['uid'] = $uid;
         echo "<script>
-        alert('회원가입이 되었습니다.');
+        alert('로그인이 되었습니다.');
         window.location.href = '../main.php'; // 확인 누르면 이동
       </script>";
         exit();
