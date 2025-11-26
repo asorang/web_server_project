@@ -29,7 +29,7 @@
         <div class="links">
             <a href="signup.php">회원가입</a>
             <span class="separator">|</span>
-            <a href="index.php">홈으로 돌아가기</a>
+            <a href="main.php">홈으로 돌아가기</a>
         </div>
     </div>
     
