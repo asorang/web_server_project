@@ -3,7 +3,7 @@
     
     // 로그인 체크
     $isLoggedIn = isset($_SESSION['uid']);
-    $nickname = isset($_SESSION['userNick']) ? $_SESSION['userNick'] : 'Guest';
+    $nickname = isset($_SESSION['userNick']) ? $_SESSION['userNick'] : $_SESSION['nickname'];
 ?>
 <!DOCTYPE html>
 <html lang="ko">

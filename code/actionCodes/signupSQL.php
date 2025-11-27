@@ -1,5 +1,5 @@
 <?php
-    require "DBFirst.php";
+    require "DB.php";
 
     $userID = $_POST['userID'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
