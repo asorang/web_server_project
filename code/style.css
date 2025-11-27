@@ -102,8 +102,8 @@ body.login-page, body.matchmaking-page {
     display: flex; justify-content: center; align-items: center;
     min-height: 100vh; padding: 40px 0;
     
-    /* 배경 이미지 설정 (필요시 사용) */
-    /* background-image: url('login_bg.png'); */
+    /* 배경 이미지 설정 */
+    background-image: url('login_bg2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -270,20 +270,42 @@ body.settings-page { padding-top: 50px; }
 
 
 /* =========================================
-   7. 싱글 플레이 난이도 버튼 (신규 추가됨)
+   7. 싱글 플레이 난이도 버튼 (7단계 세분화)
    ========================================= */
+.difficulty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 리스트 스크롤 기능 추가 (버튼이 많으므로) */
+.scrollable-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px; /* 스크롤바 여유 공간 */
+}
+
+/* 스크롤바 디자인 (Webkit - Chrome, Safari) */
+.scrollable-list::-webkit-scrollbar { width: 8px; }
+.scrollable-list::-webkit-scrollbar-track { background: #2b2926; }
+.scrollable-list::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+.scrollable-list::-webkit-scrollbar-thumb:hover { background: #777; }
+
 .btn-diff {
     width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 5px;
+    padding: 15px 20px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
+    
     display: flex;
-    justify-content: space-between; /* 텍스트 양끝 정렬 */
+    justify-content: space-between;
+    align-items: center;
+    
     transition: transform 0.1s, filter 0.1s;
 }
 
@@ -292,7 +314,18 @@ body.settings-page { padding-top: 50px; }
     filter: brightness(1.1);
 }
 
-/* 색상 지정 */
-.btn-diff.easy { background-color: #81b64c; }   /* 초급: 초록 */
-.btn-diff.medium { background-color: #f39c12; } /* 중급: 주황/노랑 */
-.btn-diff.hard { background-color: #e74c3c; }   /* 상급: 빨강 */
+/* 버튼 내부 텍스트 정렬 */
+.diff-left { display: flex; flex-direction: column; align-items: flex-start; }
+.diff-name { font-size: 1.1em; }
+.diff-grade { font-size: 0.8em; opacity: 0.9; font-weight: normal; }
+.diff-score { font-size: 0.9em; opacity: 0.8; font-family: monospace; }
+
+/* 단계별 색상 지정 */
+.btn-diff.seed { background-color: #A8D5BA; color: #2b2926; } /* 새싹: 연두 */
+.btn-diff.beginner { background-color: #81b64c; }             /* 초급: 초록 */
+.btn-diff.intermediate { background-color: #3996f3; }          /* 중급: 파랑 */
+.btn-diff.advanced { background-color: #9b59b6; }              /* 고급: 보라 */
+.btn-diff.super { background-color: #e67e22; }                 /* 초고급: 주황 */
+.btn-diff.hell { background-color: #e74c3c; }                  /* 극악: 빨강 */
+.btn-diff.pro { background-color: #34495e; border: 1px solid #f1c40f; } /* 프로: 곤색+금테 */
+.btn-diff.pro .diff-name { color: #f1c40f; } /* 프로 글자 금색 */

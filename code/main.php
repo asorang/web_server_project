@@ -103,22 +103,69 @@
     </section>
 
     <div id="single-modal" class="modal-overlay">
-        <div class="matchmaking-container"> <h2>AI 난이도 선택</h2>
-            <p style="color: #ccc; margin-bottom: 15px;">도전할 상대의 실력을 선택하세요.</p>
+        <div class="matchmaking-container">
+            <h2>AI 난이도 선택</h2>
+            <p style="color: #ccc; margin-bottom: 15px;">도전할 급수를 선택하세요.</p>
             
-            <div class="difficulty-list" style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                <button onclick="startGame('easy')" class="btn-diff easy">
-                    <span>🌱 초급</span> <span>(입문자용)</span>
+            <div class="difficulty-list scrollable-list">
+                <button onclick="startGame('seed')" class="btn-diff seed">
+                    <div class="diff-left">
+                        <span class="diff-name">🌱 새싹</span>
+                        <span class="diff-grade">14급 ~ 11급</span>
+                    </div>
+                    <span class="diff-score">~ 799점</span>
                 </button>
-                <button onclick="startGame('medium')" class="btn-diff medium">
-                    <span>⚔️ 중급</span> <span>(숙련자용)</span>
+
+                <button onclick="startGame('beginner')" class="btn-diff beginner">
+                    <div class="diff-left">
+                        <span class="diff-name">🐣 초급</span>
+                        <span class="diff-grade">10급 ~ 7급</span>
+                    </div>
+                    <span class="diff-score">800 ~ 1199점</span>
                 </button>
-                <button onclick="startGame('hard')" class="btn-diff hard">
-                    <span>🔥 상급</span> <span>(고수용)</span>
+
+                <button onclick="startGame('intermediate')" class="btn-diff intermediate">
+                    <div class="diff-left">
+                        <span class="diff-name">⚔️ 중급</span>
+                        <span class="diff-grade">6급 ~ 4급</span>
+                    </div>
+                    <span class="diff-score">1200 ~ 1499점</span>
+                </button>
+
+                <button onclick="startGame('advanced')" class="btn-diff advanced">
+                    <div class="diff-left">
+                        <span class="diff-name">🏅 고급</span>
+                        <span class="diff-grade">3급 ~ 1급</span>
+                    </div>
+                    <span class="diff-score">1500 ~ 1799점</span>
+                </button>
+
+                <button onclick="startGame('super')" class="btn-diff super">
+                    <div class="diff-left">
+                        <span class="diff-name">💎 초고급</span>
+                        <span class="diff-grade">1단 ~ 3단</span>
+                    </div>
+                    <span class="diff-score">1800 ~ 2099점</span>
+                </button>
+
+                <button onclick="startGame('hell')" class="btn-diff hell">
+                    <div class="diff-left">
+                        <span class="diff-name">👹 극악</span>
+                        <span class="diff-grade">4단 ~ 5단</span>
+                    </div>
+                    <span class="diff-score">2100 ~ 2299점</span>
+                </button>
+
+                <button onclick="startGame('pro')" class="btn-diff pro">
+                    <div class="diff-left">
+                        <span class="diff-name">👑 프로</span>
+                        <span class="diff-grade">6단 ~ 7단</span>
+                    </div>
+                    <span class="diff-score">2300 ~ 2799점</span>
                 </button>
             </div>
 
-            <button id="cancel-matchmaking" onclick="closeSingleSetup()">취소</button>
+            <button id="cancel-matchmaking" onclick="closeSingleSetup()" style="margin-top: 15px;">취소</button>
         </div>
     </div>
 
@@ -132,21 +179,15 @@
     </div>
 
     <script>
-        // 싱글 플레이 모달 열기/닫기
         function openSingleSetup() {
             document.getElementById('single-modal').style.display = 'flex';
         }
         function closeSingleSetup() {
             document.getElementById('single-modal').style.display = 'none';
         }
-
-        // 게임 시작 (난이도 값을 가지고 이동)
         function startGame(level) {
-            // game.php로 이동하면서 난이도 정보를 보냄 (예: game.php?level=hard)
             location.href = 'game.php?level=' + level;
         }
-
-        // 온라인 매칭 모달 열기/닫기
         function openMatchmaking() {
             document.getElementById('match-modal').style.display = 'flex';
         }
