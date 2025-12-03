@@ -54,6 +54,9 @@ $score = 500;
 $setting = "";
 
 
+
+
+
 $stmt = $conn->prepare("SELECT uid FROM loginTable WHERE id = ?");
     if (!$stmt) {
         die("prepare 실패 원인: " . $conn->error);
@@ -66,16 +69,14 @@ $stmt = $conn->prepare("SELECT uid FROM loginTable WHERE id = ?");
     $stmt->free_result();    // 결과 해제
     $stmt->close();
 
-
 $stmt = $conn->prepare("
-        INSERT INTO userTable (uid, nickname, gender, score, setting)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO userTable (uid, nickname, gender, setting)
+        VALUES (?, ?, ?, ?)
     ");
-    $stmt->bind_param("issis",
+    $stmt->bind_param("isss",
     $uid,
     $userNick,
     $userGender,
-    $score,
     $setting
     );
     //uid는 테이블 다시 해야함

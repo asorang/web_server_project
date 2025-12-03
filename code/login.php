@@ -27,11 +27,11 @@
         </form>
         
         <div class="links">
-            <a href="signup.php">회원가입</a>
+            <a href="./signup.php">회원가입</a>
             <span class="separator">|</span>
-            <a href="find_id.php">아이디 찾기</a>
+            <a href="./find_id.php">아이디 찾기</a>
             <span class="separator">|</span>
-            <a href="find_pw.php">비밀번호 찾기</a>
+            <a href="./find_pw.php">비밀번호 찾기</a>
         </div>
     </div>
     

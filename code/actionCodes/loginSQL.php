@@ -12,9 +12,25 @@
     if ($stmt->num_rows === 1) {
         $stmt->bind_result($uid, $hashedPassword, $nickname); // 컬럼 값을 변수에 바인딩
         $stmt->fetch();
+        
+
 
     if (password_verify($password, $hashedPassword)) {
-        session_start();
+      $stmt->close();
+    $stmt = $conn->prepare("SELECT score, games_played, win_rate FROM userRating WHERE uid = ?");
+    $stmt->bind_param( "i", $uid);
+    $stmt->execute();
+    $stmt->store_result();
+      session_start();
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($score,$games_played,$win_rate); // 컬럼 값을 변수에 바인딩
+        $stmt->fetch();
+        $_SESSION['score'] = $score;
+        $_SESSION['played'] = $games_played;
+        $_SESSION['win_rate'] = $win_rate;
+
+      }  
+        
         $_SESSION['uid'] = $uid;
         $_SESSION['nickname'] = $nickname;
         echo "<script>
@@ -36,4 +52,6 @@
           </script>";
         exit;
     }
+    
+
 ?>

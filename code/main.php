@@ -4,6 +4,7 @@
     // 로그인 체크
     $isLoggedIn = isset($_SESSION['uid']);
     $nickname = isset($_SESSION['userNick']) ? $_SESSION['userNick'] : (isset($_SESSION['nickname']) ? $_SESSION['nickname'] : 'Guest');
+    
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -185,7 +186,7 @@
             document.getElementById('single-modal').style.display = 'none';
         }
         function startGame(level) {
-            location.href = 'AIMatch.php?level=' + level;
+            location.href = './playcodes/AIMatch.php?level=' + level;
         }
         function openMatchmaking() {
             document.getElementById('match-modal').style.display = 'flex';
