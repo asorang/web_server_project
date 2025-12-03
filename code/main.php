@@ -29,6 +29,11 @@
 
             <div class="nav-auth">
                 <?php if ($isLoggedIn): ?>
+                    <div class="my-score-box">
+                        <span class="score-text"><i class="fas fa-trophy"></i> 0점</span>
+                        <span class="grade-badge">급수</span>
+                    </div>
+
                     <div class="profile-dropdown">
                         <div class="profile-trigger" onclick="toggleProfileMenu()">
                             <i class="fas fa-user-circle"></i> <?php echo $nickname; ?>님 <i class="fas fa-caret-down"></i>
@@ -116,32 +121,25 @@
             
             <div class="difficulty-list scrollable-list">
                 <button onclick="startGame('seed')" class="btn-diff seed">
-                    <div class="diff-left"><span class="diff-name">🌱 새싹</span><span class="diff-grade">14급 ~ 11급</span></div>
-                    <span class="diff-score">~ 799점</span>
+                    <div class="diff-left"><span class="diff-name">🌱 새싹</span><span class="diff-grade">14급 ~ 11급</span></div><span class="diff-score">~ 799점</span>
                 </button>
                 <button onclick="startGame('beginner')" class="btn-diff beginner">
-                    <div class="diff-left"><span class="diff-name">🐣 초급</span><span class="diff-grade">10급 ~ 7급</span></div>
-                    <span class="diff-score">800 ~ 1199점</span>
+                    <div class="diff-left"><span class="diff-name">🐣 초급</span><span class="diff-grade">10급 ~ 7급</span></div><span class="diff-score">800 ~ 1199점</span>
                 </button>
                 <button onclick="startGame('intermediate')" class="btn-diff intermediate">
-                    <div class="diff-left"><span class="diff-name">⚔️ 중급</span><span class="diff-grade">6급 ~ 4급</span></div>
-                    <span class="diff-score">1200 ~ 1499점</span>
+                    <div class="diff-left"><span class="diff-name">⚔️ 중급</span><span class="diff-grade">6급 ~ 4급</span></div><span class="diff-score">1200 ~ 1499점</span>
                 </button>
                 <button onclick="startGame('advanced')" class="btn-diff advanced">
-                    <div class="diff-left"><span class="diff-name">🏅 고급</span><span class="diff-grade">3급 ~ 1급</span></div>
-                    <span class="diff-score">1500 ~ 1799점</span>
+                    <div class="diff-left"><span class="diff-name">🏅 고급</span><span class="diff-grade">3급 ~ 1급</span></div><span class="diff-score">1500 ~ 1799점</span>
                 </button>
                 <button onclick="startGame('super')" class="btn-diff super">
-                    <div class="diff-left"><span class="diff-name">💎 초고급</span><span class="diff-grade">1단 ~ 3단</span></div>
-                    <span class="diff-score">1800 ~ 2099점</span>
+                    <div class="diff-left"><span class="diff-name">💎 초고급</span><span class="diff-grade">1단 ~ 3단</span></div><span class="diff-score">1800 ~ 2099점</span>
                 </button>
                 <button onclick="startGame('hell')" class="btn-diff hell">
-                    <div class="diff-left"><span class="diff-name">👹 극악</span><span class="diff-grade">4단 ~ 5단</span></div>
-                    <span class="diff-score">2100 ~ 2299점</span>
+                    <div class="diff-left"><span class="diff-name">👹 극악</span><span class="diff-grade">4단 ~ 5단</span></div><span class="diff-score">2100 ~ 2299점</span>
                 </button>
                 <button onclick="startGame('pro')" class="btn-diff pro">
-                    <div class="diff-left"><span class="diff-name">👑 프로</span><span class="diff-grade">6단 ~ 7단</span></div>
-                    <span class="diff-score">2300 ~ 2799점</span>
+                    <div class="diff-left"><span class="diff-name">👑 프로</span><span class="diff-grade">6단 ~ 7단</span></div><span class="diff-score">2300 ~ 2799점</span>
                 </button>
             </div>
 
@@ -159,41 +157,13 @@
     </div>
 
     <script>
-        // 프로필 메뉴 토글 (추가됨)
-        function toggleProfileMenu() {
-            var menu = document.getElementById("profile-menu");
-            menu.classList.toggle("show");
-        }
-
-        // 화면 다른 곳 클릭 시 메뉴 닫기 (추가됨)
-        window.onclick = function(event) {
-            if (!event.target.matches('.profile-trigger') && !event.target.matches('.profile-trigger *')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        function openSingleSetup() {
-            document.getElementById('single-modal').style.display = 'flex';
-        }
-        function closeSingleSetup() {
-            document.getElementById('single-modal').style.display = 'none';
-        }
-        function startGame(level) {
-            location.href = 'AIMatch.php?level=' + level;
-        }
-        function openMatchmaking() {
-            document.getElementById('match-modal').style.display = 'flex';
-        }
-        function closeMatchmaking() {
-            document.getElementById('match-modal').style.display = 'none';
-        }
+        function toggleProfileMenu() { document.getElementById("profile-menu").classList.toggle("show"); }
+        window.onclick = function(event) { if (!event.target.matches('.profile-trigger') && !event.target.matches('.profile-trigger *')) { var dropdowns = document.getElementsByClassName("dropdown-content"); for (var i = 0; i < dropdowns.length; i++) { var openDropdown = dropdowns[i]; if (openDropdown.classList.contains('show')) { openDropdown.classList.remove('show'); } } } }
+        function openSingleSetup() { document.getElementById('single-modal').style.display = 'flex'; }
+        function closeSingleSetup() { document.getElementById('single-modal').style.display = 'none'; }
+        function startGame(level) { location.href = 'AIMatch.php?level=' + level; }
+        function openMatchmaking() { document.getElementById('match-modal').style.display = 'flex'; }
+        function closeMatchmaking() { document.getElementById('match-modal').style.display = 'none'; }
     </script>
-
 </body>
 </html>

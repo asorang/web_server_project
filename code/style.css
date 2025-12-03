@@ -38,11 +38,17 @@ ul { list-style: none; }
     border-bottom: 1px solid var(--border-color);
 }
 .nav-container {
+    position: relative; /* ★ 추가됨: 자식 요소의 기준점 잡기 */
     width: 100%; max-width: 1200px; margin: 0 auto;
     display: flex; justify-content: space-between; align-items: center;
 }
 .logo { font-size: 1.2rem; font-weight: 900; color: var(--accent-green); }
-.nav-menu { display: flex; gap: 20px; }
+.nav-menu { 
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    display: flex; gap: 20px; 
+}
 .nav-link { color: var(--text-sub); font-weight: 500; font-size: 0.95rem; transition: 0.2s; }
 .nav-link:hover, .nav-link.active { color: #fff; }
 .nav-auth { display: flex; gap: 10px; align-items: center; }
@@ -842,4 +848,38 @@ body.review-page {
 @media (max-width: 1000px) {
     .review-layout { flex-direction: column; height: auto; }
     .moves-container { height: 300px; }
+}
+
+/* =========================================
+   8.5. 상단 내 점수 표시 (신규 추가됨)
+   ========================================= */
+.my-score-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px; /* 닉네임과 간격 띄우기 */
+    background-color: #2b2926;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #444;
+}
+
+.score-text {
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.score-text i {
+    color: #f1c40f; /* 트로피 금색 */
+    margin-right: 4px;
+}
+
+.grade-badge {
+    font-size: 12px;
+    background-color: var(--accent-green); /* 초록색 뱃지 */
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
 }
