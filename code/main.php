@@ -65,11 +65,11 @@
                         </div>
                     </button>
                     
-                    <button class="btn-play-online" onclick="openMatchmaking()">
-                        <div class="btn-icon"><i class="fas fa-globe"></i></div>
+                    <button class="btn-play-online" onclick="location.href='PlayerMatch.php'">
+                        <div class="btn-icon"><i class="fas fa-user-friends"></i></div>
                         <div class="btn-text">
-                            <span class="btn-title">온라인 대전</span>
-                            <span class="btn-desc">유저와 매칭하기</span>
+                            <span class="btn-title">친선 대전</span>
+                            <span class="btn-desc">친구와 2인용 하기</span>
                         </div>
                     </button>
                 <?php else: ?>
@@ -83,7 +83,7 @@
                     <button class="btn-play-online" onclick="location.href='login.php'">
                         <div class="btn-icon"><i class="fas fa-lock"></i></div>
                         <div class="btn-text">
-                            <span class="btn-title">온라인 대전</span>
+                            <span class="btn-title">친선 대전</span>
                             <span class="btn-desc">로그인이 필요합니다</span>
                         </div>
                     </button>
@@ -118,41 +118,16 @@
         <div class="matchmaking-container">
             <h2>AI 난이도 선택</h2>
             <p style="color: #ccc; margin-bottom: 15px;">도전할 급수를 선택하세요.</p>
-            
             <div class="difficulty-list scrollable-list">
-                <button onclick="startGame('seed')" class="btn-diff seed">
-                    <div class="diff-left"><span class="diff-name">🌱 새싹</span><span class="diff-grade">14급 ~ 11급</span></div><span class="diff-score">~ 799점</span>
-                </button>
-                <button onclick="startGame('beginner')" class="btn-diff beginner">
-                    <div class="diff-left"><span class="diff-name">🐣 초급</span><span class="diff-grade">10급 ~ 7급</span></div><span class="diff-score">800 ~ 1199점</span>
-                </button>
-                <button onclick="startGame('intermediate')" class="btn-diff intermediate">
-                    <div class="diff-left"><span class="diff-name">⚔️ 중급</span><span class="diff-grade">6급 ~ 4급</span></div><span class="diff-score">1200 ~ 1499점</span>
-                </button>
-                <button onclick="startGame('advanced')" class="btn-diff advanced">
-                    <div class="diff-left"><span class="diff-name">🏅 고급</span><span class="diff-grade">3급 ~ 1급</span></div><span class="diff-score">1500 ~ 1799점</span>
-                </button>
-                <button onclick="startGame('super')" class="btn-diff super">
-                    <div class="diff-left"><span class="diff-name">💎 초고급</span><span class="diff-grade">1단 ~ 3단</span></div><span class="diff-score">1800 ~ 2099점</span>
-                </button>
-                <button onclick="startGame('hell')" class="btn-diff hell">
-                    <div class="diff-left"><span class="diff-name">👹 극악</span><span class="diff-grade">4단 ~ 5단</span></div><span class="diff-score">2100 ~ 2299점</span>
-                </button>
-                <button onclick="startGame('pro')" class="btn-diff pro">
-                    <div class="diff-left"><span class="diff-name">👑 프로</span><span class="diff-grade">6단 ~ 7단</span></div><span class="diff-score">2300 ~ 2799점</span>
-                </button>
+                <button onclick="startGame('seed')" class="btn-diff seed"><div class="diff-left"><span class="diff-name">🌱 새싹</span><span class="diff-grade">14급 ~ 11급</span></div><span class="diff-score">~ 799점</span></button>
+                <button onclick="startGame('beginner')" class="btn-diff beginner"><div class="diff-left"><span class="diff-name">🐣 초급</span><span class="diff-grade">10급 ~ 7급</span></div><span class="diff-score">800 ~ 1199점</span></button>
+                <button onclick="startGame('intermediate')" class="btn-diff intermediate"><div class="diff-left"><span class="diff-name">⚔️ 중급</span><span class="diff-grade">6급 ~ 4급</span></div><span class="diff-score">1200 ~ 1499점</span></button>
+                <button onclick="startGame('advanced')" class="btn-diff advanced"><div class="diff-left"><span class="diff-name">🏅 고급</span><span class="diff-grade">3급 ~ 1급</span></div><span class="diff-score">1500 ~ 1799점</span></button>
+                <button onclick="startGame('super')" class="btn-diff super"><div class="diff-left"><span class="diff-name">💎 초고급</span><span class="diff-grade">1단 ~ 3단</span></div><span class="diff-score">1800 ~ 2099점</span></button>
+                <button onclick="startGame('hell')" class="btn-diff hell"><div class="diff-left"><span class="diff-name">👹 극악</span><span class="diff-grade">4단 ~ 5단</span></div><span class="diff-score">2100 ~ 2299점</span></button>
+                <button onclick="startGame('pro')" class="btn-diff pro"><div class="diff-left"><span class="diff-name">👑 프로</span><span class="diff-grade">6단 ~ 7단</span></div><span class="diff-score">2300 ~ 2799점</span></button>
             </div>
-
             <button id="cancel-matchmaking" onclick="closeSingleSetup()" style="margin-top: 15px;">취소</button>
-        </div>
-    </div>
-
-    <div id="match-modal" class="modal-overlay">
-        <div class="matchmaking-container">
-            <h2>대전 상대 찾는 중...</h2>
-            <div class="spinner"></div>
-            <p style="color: #bababa; font-size: 14px; margin-top: 10px;">상대를 찾고 있습니다.</p>
-            <button id="cancel-matchmaking" onclick="closeMatchmaking()">매칭 취소</button>
         </div>
     </div>
 
@@ -162,8 +137,6 @@
         function openSingleSetup() { document.getElementById('single-modal').style.display = 'flex'; }
         function closeSingleSetup() { document.getElementById('single-modal').style.display = 'none'; }
         function startGame(level) { location.href = 'AIMatch.php?level=' + level; }
-        function openMatchmaking() { document.getElementById('match-modal').style.display = 'flex'; }
-        function closeMatchmaking() { document.getElementById('match-modal').style.display = 'none'; }
     </script>
 </body>
 </html>
