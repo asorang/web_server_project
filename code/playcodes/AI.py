@@ -204,12 +204,12 @@ def heuristic_logits_full(board, ai_color, human_color, attack_scale=1.0, defens
             for dx,dy in dirs:
                 cnt, f_open, b_open = line_info(board, x, y, dx, dy, ai_color)
                 if cnt >= 5:
-                    atk_score += 800.0
+                    atk_score += 1000.0
                 elif cnt == 4:
                     if f_open and b_open:
-                        atk_score += 300.0
+                        atk_score += 600.0
                     else:
-                        atk_score += 80.0
+                        atk_score += 200.0
                 elif cnt == 3:
                     if f_open and b_open:
                         atk_score += 40.0
@@ -229,7 +229,7 @@ def heuristic_logits_full(board, ai_color, human_color, attack_scale=1.0, defens
                     threats += 1
                 elif cnt == 4:
                     if f_open and b_open:
-                        def_score += 400.0
+                        def_score += 500.0
                     else:
                         def_score += 100.0
                     threats += 1
