@@ -9,6 +9,8 @@
 <body class="review-page"> 
 
     <div class="review-layout">
+        
+
         <div class="left-panel">
             <div class="board-wrapper">
                 <canvas id="omok-board"></canvas>
@@ -25,10 +27,10 @@
                 <h3>게임 정보</h3>
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="label">흑돌:</span> <strong id="p1-name">-</strong>
+                        <span class="label">흑돌 uid:</span> <strong id="p1-name">-</strong>
                     </div>
                     <div class="info-item">
-                        <span class="label">백돌:</span> <strong id="p2-name">-</strong>
+                        <span class="label">백돌 uid:</span> <strong id="p2-name">-</strong>
                     </div>
                     <div class="info-item">
                         <span class="label">결과:</span> <strong id="game-result" style="color: #81b64c;">-</strong>
@@ -42,7 +44,9 @@
             </div>
 
             <div class="moves-container">
-                <h3>수순 기록</h3>
+                <h3>수순 기록<div id="move-count" style="margin-top:8px; font-weight:bold;">
+    0 / 0
+</div></h3>
                 <div class="moves-scroll-box">
                     <ol id="moves-list">
                         </ol>

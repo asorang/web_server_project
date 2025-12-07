@@ -85,7 +85,7 @@ $stage = $diff_arr[$difficulty];
                 </div>
 
                 <div class="game-actions">
-                    <button id="resign-button" class="btn-danger">기권하기</button>
+                    
                     <button id="home-button" class="btn-secondary"><a href="../main.php" class="nav-link">홈으로 가기</a></button>
                 </div>
 

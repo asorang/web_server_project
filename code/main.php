@@ -1,10 +1,24 @@
 <?php
-    session_start();
-    
+require "./actionCodes/DB.php";
+session_start();
+$uid = $_SESSION['uid'] ?? 0 ;
+$stmt = $conn->prepare("SELECT score, games_played, win_rate FROM userRating WHERE uid = ?");
+    $stmt->bind_param( "i", $uid);
+    $stmt->execute();
+    $stmt->store_result();   
+      
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($score,$games_played,$win_rate); // 컬럼 값을 변수에 바인딩
+        $stmt->fetch();
+        $_SESSION['score'] = $score;
+        $_SESSION['played'] = $games_played;
+        $_SESSION['win_rate'] = $win_rate;
+      }    
+      $stmt->close();
     // 로그인 체크
     $isLoggedIn = isset($_SESSION['uid']);
     $nickname = isset($_SESSION['userNick']) ? $_SESSION['userNick'] : (isset($_SESSION['nickname']) ? $_SESSION['nickname'] : 'Guest');
-    
+    $score = $_SESSION['score'] ?? 500;
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,7 +45,7 @@
             <div class="nav-auth">
                 <?php if ($isLoggedIn): ?>
                     <div class="my-score-box">
-                        <span class="score-text"><i class="fas fa-trophy"></i> 0점</span>
+                        <span class="score-text"><i class="fas fa-trophy"></i> <?php echo $score ?>점</span>
                         <span class="grade-badge">급수</span>
                     </div>
 
@@ -66,11 +80,11 @@
                         </div>
                     </button>
                     
-                    <button class="btn-play-online" onclick="openMatchmaking()">
-                        <div class="btn-icon"><i class="fas fa-globe"></i></div>
+                    <button class="btn-play-online" onclick="location.href='./playcodes/PlayerMatch.php'">
+                        <div class="btn-icon"><i class="fas fa-user-friends"></i></div>
                         <div class="btn-text">
-                            <span class="btn-title">온라인 대전</span>
-                            <span class="btn-desc">유저와 매칭하기</span>
+                            <span class="btn-title">친선 대전</span>
+                            <span class="btn-desc">친구와 2인용 하기</span>
                         </div>
                     </button>
                 <?php else: ?>
@@ -84,7 +98,7 @@
                     <button class="btn-play-online" onclick="location.href='login.php'">
                         <div class="btn-icon"><i class="fas fa-lock"></i></div>
                         <div class="btn-text">
-                            <span class="btn-title">온라인 대전</span>
+                            <span class="btn-title">친선 대전</span>
                             <span class="btn-desc">로그인이 필요합니다</span>
                         </div>
                     </button>
@@ -158,7 +172,7 @@
     </div>
 
     <script>
-<<<<<<< HEAD
+        const USER_ID = <?php echo json_encode($uid); ?>;
         // 프로필 메뉴 토글 (추가됨)
         function toggleProfileMenu() {
             var menu = document.getElementById("profile-menu");
@@ -193,15 +207,6 @@
         function closeMatchmaking() {
             document.getElementById('match-modal').style.display = 'none';
         }
-=======
-        function toggleProfileMenu() { document.getElementById("profile-menu").classList.toggle("show"); }
-        window.onclick = function(event) { if (!event.target.matches('.profile-trigger') && !event.target.matches('.profile-trigger *')) { var dropdowns = document.getElementsByClassName("dropdown-content"); for (var i = 0; i < dropdowns.length; i++) { var openDropdown = dropdowns[i]; if (openDropdown.classList.contains('show')) { openDropdown.classList.remove('show'); } } } }
-        function openSingleSetup() { document.getElementById('single-modal').style.display = 'flex'; }
-        function closeSingleSetup() { document.getElementById('single-modal').style.display = 'none'; }
-        function startGame(level) { location.href = 'AIMatch.php?level=' + level; }
-        function openMatchmaking() { document.getElementById('match-modal').style.display = 'flex'; }
-        function closeMatchmaking() { document.getElementById('match-modal').style.display = 'none'; }
->>>>>>> c8c2ed789534375ef09ba3de9741c1a1ffd7cd49
     </script>
 </body>
 </html>

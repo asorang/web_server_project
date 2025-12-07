@@ -9,8 +9,8 @@ $winner = $payload['winner'] ?? '';
 $game_if = $payload['game_if'] ?? 'normal'; // 정상승리, 기권, 무승부
 $user1_id = intval($payload['user1_id'] ?? 0);
 $user2_id = intval($payload['user2_id'] ?? 1); // AI uid=1
-$user1_score = intval($payload['user1_score'] ?? 0);
-$user2_score = intval($payload['user2_score'] ?? 0);
+$user1_score = intval($payload['user1_score'] ?? 500);
+$user2_score = intval($payload['user2_score'] ?? 500);
 $user1_color = $payload['user1_color'] ?? 'B';
 $user2_color = $payload['user2_color'] ?? 'W';
 $board_moves = $payload['board_moves'] ?? [];

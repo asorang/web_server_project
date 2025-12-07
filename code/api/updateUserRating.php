@@ -23,7 +23,7 @@ if ($uid) {
     $res = mysqli_query($conn, "SELECT * FROM UserRating WHERE uid = $uid");
     if (mysqli_num_rows($res) === 0) {
         // 신규 생성
-        $initScore = 1000 + $scoreChange;
+        $initScore = 500 + $scoreChange;
         $games = 1;
         $winRate = ($scoreChange > 0) ? 1 : 0;
         mysqli_query($conn, "INSERT INTO UserRating(uid, score, games_played, win_rate) VALUES($uid, $initScore, $games, $winRate)");
@@ -31,10 +31,10 @@ if ($uid) {
         // 기존 업데이트
         $row = mysqli_fetch_assoc($res);
         $newScore = $row['score'] + $scoreChange;
-        $newGames = $row['games_played'] + 1;
-        $wins = $row['win_rate'] * $row['games_played'];
-        if ($scoreChange > 0) $wins += 1;
-        $newWinRate = $wins / $newGames;
+        $newGames = $row['games_played'] + 1;//3  4
+        $wins = $row['win_rate'] * $row['games_played'];//0.5*2 / 2  
+        if ($scoreChange > 0) $wins += 1;//2
+        $newWinRate = $wins / $newGames;//2/3
         mysqli_query($conn, "UPDATE UserRating SET score = $newScore, games_played = $newGames, win_rate = $newWinRate WHERE uid = $uid");
     }
 }

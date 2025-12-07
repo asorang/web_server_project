@@ -1,3 +1,41 @@
+<?php
+require "./actionCodes/DB.php";
+session_start();
+
+$uid = $_SESSION['uid'];
+if ($uid === 0) {
+    die("로그인 필요");
+}
+$nickname = isset($_SESSION['userNick']) ? $_SESSION['userNick'] : (isset($_SESSION['nickname']) ? $_SESSION['nickname'] : 'Guest');
+$score = $_SESSION['score'] ?? 500;
+
+$stmt = $conn->prepare("SELECT id, name FROM loginTable WHERE uid = ?");
+    $stmt->bind_param( "i", $uid);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($id, $name); // 컬럼 값을 변수에 바인딩
+        $stmt->fetch();
+        $stmt->close();
+
+        $stmt = $conn->prepare("SELECT created_at,setting FROM userTable WHERE uid = ?");
+        $stmt->bind_param( "i", $uid);
+        $stmt->execute();
+        $stmt->store_result();
+
+        
+
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($created,$setting); // 컬럼 값을 변수에 바인딩
+        $stmt->fetch();
+        $stmt->close();
+        $dataArray = json_decode($setting, true);
+    }
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,23 +56,23 @@
                 <div class="profile-card">
                     <div class="info-row">
                         <label>닉네임</label>
-                        <input type="text" value="" placeholder="DB 데이터" readonly>
+                        <input type="text" value="" placeholder=<?php echo $nickname;?> readonly>
                     </div>
                     <div class="info-row">
                         <label>아이디</label>
-                        <input type="text" value="" placeholder="DB 데이터" readonly>
+                        <input type="text" value="" placeholder=<?php echo $id;?> readonly>
                     </div>
                     <div class="info-row">
                         <label>이름</label>
-                        <input type="text" value="" placeholder="DB 데이터" readonly>
+                        <input type="text" value="" placeholder=<?php echo $name;?> readonly>
                     </div>
                     <div class="info-row">
                         <label>가입일</label>
-                        <input type="text" value="" placeholder="DB 데이터" readonly>
+                        <input type="text" value="" placeholder=<?php echo $created;?> readonly>
                     </div>
                     <div class="info-row">
                         <label>현재 점수</label>
-                        <input type="text" value="" placeholder="DB 데이터" readonly style="color: #00FFFF;">
+                        <input type="text" value="" placeholder=<?php echo $score;?> readonly style="color: #00FFFF;">
                     </div>
                 </div>
             </section>
@@ -46,14 +84,14 @@
                         <label for="bgm-volume">배경음 (BGM)</label>
                         <div class="range-wrapper">
                             <i class="fas fa-music"></i>
-                            <input type="range" id="bgm-volume" name="bgm-volume" min="0" max="100" value="50">
+                            <input type="range" id="bgm-volume" name="bgm-volume" min="0" max="100" value=<?php echo $dataArray['bgm'];?>>
                         </div>
                     </div>
                     <div class="audio-control">
                         <label for="sfx-volume">효과음 (SFX)</label>
                         <div class="range-wrapper">
                             <i class="fas fa-chess-pawn"></i>
-                            <input type="range" id="sfx-volume" name="sfx-volume" min="0" max="100" value="80">
+                            <input type="range" id="sfx-volume" name="sfx-volume" min="0" max="100" value=<?php echo $dataArray['sfx'];?>>
                         </div>
                     </div>
                     <button type="submit" class="btn-save"><i class="fas fa-save"></i> 설정 저장</button>

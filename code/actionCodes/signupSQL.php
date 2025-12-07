@@ -13,7 +13,7 @@
 
 
 // 회원 중복 검사
-    $check = $conn->prepare("SELECT id FROM loginTable WHERE id = ?");
+    $check = $conn->prepare("SELECT id FROM loginTable WHERE id = ? ");
     if (!$check) {
         die("prepare 실패 원인: " . $conn->error);
     }

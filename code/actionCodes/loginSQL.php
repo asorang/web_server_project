@@ -16,11 +16,6 @@
 
 
     if (password_verify($password, $hashedPassword)) {
-      $stmt->close();
-    $stmt = $conn->prepare("SELECT score, games_played, win_rate FROM userRating WHERE uid = ?");
-    $stmt->bind_param( "i", $uid);
-    $stmt->execute();
-    $stmt->store_result();
       session_start();
     if ($stmt->num_rows === 1) {
         $stmt->bind_result($score,$games_played,$win_rate); // 컬럼 값을 변수에 바인딩
@@ -33,12 +28,14 @@
         
         $_SESSION['uid'] = $uid;
         $_SESSION['nickname'] = $nickname;
+        $stmt->close();
         echo "<script>
         alert('".$nickname."님 환영합니다');
         window.location.href = '../main.php'; // 확인 누르면 이동
       </script>";
         exit();
     } else {
+      $stmt->close();
         echo "<script>
             alert('비밀번호가 잘못되었습니다.');
             history.back(); // 이전 페이지로 돌아가기
@@ -46,6 +43,7 @@
         exit;
     }
     } else {
+      $stmt->close();
         echo "<script>
             alert('사용자가 존재하지 않습니다.');
             history.back(); // 이전 페이지로 돌아가기

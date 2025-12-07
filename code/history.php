@@ -1,3 +1,16 @@
+<?php
+ require "./actionCodes/DB.php";
+ session_start();
+ $uid = $_SESSION['uid'] ?? null;
+ $score = $_SESSION['score'] ?? 500;
+ $games_played = $_SESSION['played'] ?? 0;
+ $win_rate = $_SESSION['win_rate'] ?? 0;
+
+    
+    $wins = $win_rate * $games_played;
+    $loses = $games_played - $wins;
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,21 +31,21 @@
                 <div class="stat-icon"><i class="fas fa-trophy"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">총 전적</span>
-                    <strong class="stat-value" id="total-games">0전 0승 0패</strong>
+                    <strong class="stat-value" id="total-games"><?php echo $games_played?>전 <?php echo  number_format($wins, 0);?>승 <?php echo  number_format($loses, 0);?>패</strong>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><i class="fas fa-chart-pie"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">승률</span>
-                    <strong class="stat-value" id="win-rate">0%</strong>
+                    <strong class="stat-value" id="win-rate"><?php echo  number_format(($win_rate*100), 2);?>%</strong>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><i class="fas fa-medal"></i></div>
                 <div class="stat-info">
-                    <span class="stat-label">현재 급수</span>
-                    <strong class="stat-value" id="current-rank">기록 없음</strong>
+                    <span class="stat-label">현재 점수</span>
+                    <strong class="stat-value" id="current-rank"><?php echo $score;?></strong>
                 </div>
             </div>
         </div>
@@ -49,12 +62,15 @@
                 </thead>
                 <tbody id="history-table-body">
                     <tr>
-                        <td colspan="4" class="empty-msg">기록을 불러오는 중...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <script src="history.js"></script>
+    <script>
+    const USER_ID = <?php echo json_encode($uid); ?>;
+</script>
+
+    <script src="./history.js"></script>
 </body>
 </html>

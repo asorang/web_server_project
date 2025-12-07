@@ -38,15 +38,16 @@ else
 // SummaryLog 테이블
 // ----------------------------
 $sql = "CREATE TABLE IF NOT EXISTS SummaryLog (
-    game_id INT NOT NULL,
-    turn SMALLINT NOT NULL,
-    user_id INT NOT NULL,
-    eval_category ENUM('good', 'normal', 'miss', 'missed_win') NOT NULL,
-    advantage_score SMALLINT NOT NULL,
-    difficulty SMALLINT NOT NULL,
+    game_id VARCHAR(30) PRIMARY KEY,
+    user_id1 INT NOT NULL,
+    user_id2 INT NOT NULL,
+    user1_color ENUM('B','W') NOT NULL,
+    user2_color ENUM('B','W') NOT NULL,
+    winner ENUM('B','W') DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (game_id, turn),
-    FOREIGN KEY (user_id) REFERENCES usertable(uid)
+
+    FOREIGN KEY (user_id1) REFERENCES usertable(uid),
+    FOREIGN KEY (user_id2) REFERENCES usertable(uid)
 )";
 if (!mysqli_query($conn, $sql)) 
     echo 'Error creating SummaryLog: ' . mysqli_error($conn) . "\n";

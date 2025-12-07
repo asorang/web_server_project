@@ -55,11 +55,8 @@ function drawStone(gY, gX, stoneType) {
     const x = PADDING + gX * GRID_SIZE;
     const y = PADDING + gY * GRID_SIZE;
 
-    if (stoneType === 'B') {
-        ctx.fillStyle = '#000';
-    } else {
-        ctx.fillStyle = '#fff';
-    }
+    if (stoneType === 'B') ctx.fillStyle = '#000';
+    else ctx.fillStyle = '#fff';
 
     ctx.beginPath();
     ctx.arc(x, y, 17, 0, 2*Math.PI);
@@ -73,6 +70,38 @@ function drawStone(gY, gX, stoneType) {
 }
 
 // ----------------------
+// 마지막 수 하이라이트
+// ----------------------
+function highlightLastMove() {
+    if (board_moves.length === 0) return;
+
+    const lastMove = board_moves[board_moves.length - 1];
+    const x = PADDING + lastMove.x * GRID_SIZE;
+    const y = PADDING + lastMove.y * GRID_SIZE;
+
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, 2*Math.PI);
+    ctx.stroke();
+}
+
+// ----------------------
+// 전체 돌 그리기 + 하이라이트
+// ----------------------
+function drawAllStones() {
+    drawBoard();
+    for (let y = 0; y < BOARD_SIZE; y++) {
+        for (let x = 0; x < BOARD_SIZE; x++) {
+            if (boardState[y][x] !== null) {
+                drawStone(y, x, boardState[y][x]);
+            }
+        }
+    }
+    highlightLastMove();
+}
+
+// ----------------------
 // DB 및 게임 기록
 // ----------------------
 async function updateUserRating(winner) {
@@ -80,6 +109,21 @@ async function updateUserRating(winner) {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({winner: winner})
+    });
+}
+
+async function saveSummaryLog(gameId, user1, user2, user1Color, user2Color, winnerColor) {
+    await fetch('../api/updateSummary.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            game_id: gameId,
+            user_id1: user1,
+            user_id2: user2,
+            user1_color: user1Color,
+            user2_color: user2Color,
+            winner: winnerColor
+        })
     });
 }
 
@@ -127,7 +171,20 @@ function showEndGameModal(message, winnerStoneType) {
 
     const winColorStone = winnerStoneType; // 이미 'B' or 'W'
 
-    updateUserRating(winColorStone);
+    if(winnerStoneType === PLAYER_STONE_TYPE){
+        updateUserRating('player');
+    }
+    else{
+        updateUserRating('ai');
+    }
+    
+    saveSummaryLog(
+        CURRENT_GAME_ID,
+        USER_ID, 
+        1, 
+        PLAYER_STONE_TYPE,
+        AI_STONE_TYPE, 
+        winColorStone);
 
     sendGameResult(
         CURRENT_GAME_ID,
@@ -142,18 +199,18 @@ function showEndGameModal(message, winnerStoneType) {
 
 
 // ----------------------
-// 서버 API 호출
+// 서버 API 호출 + 돌 그리기
 // ----------------------
 async function sendMoveToServer(mx, my) {
-    // 1) 플레이어 클릭 즉시 돌 배치
+    // 1) 플레이어 착수
     boardState[my][mx] = PLAYER_STONE_TYPE;
-    drawStone(my, mx, PLAYER_STONE_TYPE);
     onPlayerMove(mx, my, PLAYER_STONE_TYPE);
+    drawAllStones();
 
     // 2) 서버 전송 payload
     const payload = {
-        board: boardState,               // 이미 착수 반영된 board
-        player_move: { x: mx, y: my },  // 좌표 기준 x,y
+        board: boardState,
+        player_move: { x: mx, y: my },
         difficulty: CURRENT_LEVEL,
         player_stone: PLAYER_STONE_TYPE
     };
@@ -172,24 +229,20 @@ async function sendMoveToServer(mx, my) {
         return;
     }
 
-
-
-    // 3) 플레이어 승리 여부 먼저 체크
+    // 3) 플레이어 승리 체크
     if (data.game_over && data.winner_color === PLAYER_STONE_TYPE) {
         game_if = 'normal';
-        showEndGameModal(data.message, PLAYER_STONE_TYPE);   
+        showEndGameModal(data.message, PLAYER_STONE_TYPE);
         return;
     }
 
-    // 4) AI 착수 배치
+    // 4) AI 착수
     if (data.ai_move) {
         const ax = data.ai_move.x;
         const ay = data.ai_move.y;
-
-        // AI 좌표도 동일 기준 (y,x)
         boardState[ay][ax] = AI_STONE_TYPE;
-        drawStone(ay, ax, AI_STONE_TYPE);
         onPlayerMove(ax, ay, AI_STONE_TYPE);
+        drawAllStones();
     }
 
     // 5) AI 승리 체크
@@ -199,7 +252,36 @@ async function sendMoveToServer(mx, my) {
     }
 }
 
+// ----------------------
+// AI 선공 처리
+// ----------------------
+async function aiFirstMoveIfNeeded() {
+    if (AI_STONE_TYPE === 'B') {
+        const res = await fetch('./callAI.php', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                board: boardState,
+                difficulty: CURRENT_LEVEL,
+                player_stone: PLAYER_STONE_TYPE,
+                player_move: null
+            })
+        });
 
+        const data = await res.json();
+        if (data.ai_move) {
+            const ax = data.ai_move.x;
+            const ay = data.ai_move.y;
+            boardState[ay][ax] = AI_STONE_TYPE;
+            onPlayerMove(ax, ay, AI_STONE_TYPE);
+            drawAllStones();
+        }
+
+        if (data.game_over && data.winner_color === AI_STONE_TYPE) {
+            showEndGameModal(data.message, AI_STONE_TYPE);
+        }
+    }
+}
 
 // ----------------------
 // 클릭 처리
@@ -219,40 +301,6 @@ canvas.addEventListener('click', (event) => {
 
     sendMoveToServer(gridX, gridY);
 });
-
-
-// ----------------------
-// AI 선공 처리
-// ----------------------
-async function aiFirstMoveIfNeeded() {
-    if (AI_STONE_TYPE === 'B') { // AI가 흑돌
-        const res = await fetch('./callAI.php', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-                board: boardState,
-                difficulty: CURRENT_LEVEL,
-                player_stone: PLAYER_STONE_TYPE,
-                player_move: null
-            })
-        });
-
-        const data = await res.json();
-
-        if (data.ai_move) {
-            const ax = data.ai_move.x;
-            const ay = data.ai_move.y;
-            boardState[ay][ax] = AI_STONE_TYPE;
-            drawStone(ay, ax, AI_STONE_TYPE);
-            onPlayerMove(ax, ay, AI_STONE_TYPE);
-        }
-
-        if (data.game_over && data.winner_color === AI_STONE_TYPE) {
-            showEndGameModal(data.message, AI_STONE_TYPE);
-        }
-    }
-}
-
 
 // ----------------------
 // 초기 렌더링
